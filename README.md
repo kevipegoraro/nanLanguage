@@ -399,29 +399,6 @@ Would connect to an API and print the result.
 
 ---
 
-## 🔥 9. Add REPL Mode
-
-Instead of running files:
-
-```
-mini_lang
->
-```
-
-Interactive execution.
-
----
-
-## 🔥 10. Convert to Bytecode Interpreter
-
-For performance:
-
-* Parse once
-* Generate instruction list
-* Execute bytecode
-
----
-
 # Educational Value
 
 nanLanguage demonstrates:
@@ -444,4 +421,3 @@ It is a strong foundation for building:
 
 # Open Source, fell fre to modify it!
 
-Just tell me what direction you'd like to take 🚀
