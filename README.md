@@ -20,13 +20,13 @@ nanLanguage reads a `.txt` file and executes commands line by line.
 ## Compile
 
 ```bash
-g++ -std=c++17 main.cpp -o mini_lang
+g++ -std=c++17 nanLanguage.cpp -o nanLanguage 
 ```
 
 ## Run
 
 ```bash
-./mini_lang script.txt
+./nanLanguage program.txt
 ```
 
 If no file is provided:

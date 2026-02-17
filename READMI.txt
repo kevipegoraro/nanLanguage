@@ -1,1 +1,12 @@
-READMI
+# open VS Code terminal
+Ctrl + `
+
+# go to folder
+cd %USERPROFILE%\Documents
+
+# clone repo
+git clone https://github.com/kevipegoraro/nanLanguage.git
+
+# open in VS Code
+cd nanLanguage
+code .
