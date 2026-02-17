@@ -1,0 +1,11 @@
+set x = 5
+add x 3
+print x
+
+setv v = [1,2,3,4]
+print v
+
+sumv v
+
+rangev 1 5 
+print r

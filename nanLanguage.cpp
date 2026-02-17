@@ -319,11 +319,22 @@ private:
     // Extract block lines until a line that is exactly ")"
     static std::string readBlock(std::istringstream& stream) {
         std::string block;
-        std::string blockLine;
-        while (std::getline(stream, blockLine)) {
-            if (trim(blockLine) == ")") break;
-            block += blockLine + "\n";
+        std::string line;
+        int depth = 1;
+
+        while (std::getline(stream, line)) {
+            std::string t = trim(line);
+
+            for (char c : t) {
+                if (c == '(') depth++;
+                else if (c == ')') depth--;
+            }
+
+            if (depth == 0) break;
+
+            block += line + "\n";
         }
+
         return block;
     }
 
