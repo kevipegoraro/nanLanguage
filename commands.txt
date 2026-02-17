@@ -10,3 +10,14 @@ git clone https://github.com/kevipegoraro/nanLanguage.git
 # open in VS Code
 cd nanLanguage
 code .
+----
+git credential-manager reject https://github.com
+
+
+git add .
+
+
+git commit -m "Your message describing the changes"
+
+
+git push
