@@ -57,25 +57,10 @@ void execute(const std::string& code) {
                 std::cout << "Syntax error: expected (\n";
                 continue;
             }
+            
+            // Calculate block separately to support nested loops and ifs
+            std::string block = readBlock(stream);
 
-            // Collect block lines
-            std::string block;
-            std::string blockLine;
-            int depth = 1;
-
-            while (std::getline(stream, blockLine)) {
-
-                for (char c : blockLine) { // if do not use char and for here get error nesting loops and ifs
-                    if (c == '(') depth++;
-                    else if (c == ')') depth--;
-                }
-
-                if (depth == 0)
-                    break;
-
-
-                block += blockLine + "\n";
-            }
 
             // Execute loop
             for (int i = 0; i < count; i++) {
@@ -106,24 +91,9 @@ void execute(const std::string& code) {
             std::string openParen;
             ss >> openParen;
 
-            // Collect block (nested supported)
-            std::string block;
-            std::string blockLine;
-            int depth = 1;
+            // If "(" is not at the end of line, it means condition is separated by space
+            std::string block = readBlock(stream);
 
-            while (std::getline(stream, blockLine)) {
-
-                if (blockLine == "(")
-                    depth++;
-
-                else if (blockLine == ")") {
-                    depth--;
-                    if (depth == 0)
-                        break;
-                }
-
-                block += blockLine + "\n";
-            }
 
             if (evaluateCondition(condition)) {
                 execute(block);
@@ -273,6 +243,71 @@ private:
         }
 
         // =========================
+        // SUB COMMAND
+        // Example:
+        // sub x 3
+        // =========================
+        else if (command == "sub") {
+
+            std::string var;
+            int value;
+
+            ss >> var >> value;
+
+            if (variables.count(var)) {
+                variables[var] -= value;
+            }
+            else {
+                std::cout << "Error: variable '" << var << "' not found\n";
+            }
+        }
+
+        // =========================
+        // MULT COMMAND
+        // Example:
+        // mult x 3
+        // =========================
+        else if (command == "mult") {
+
+            std::string var;
+            int value;
+
+            ss >> var >> value;
+
+            if (variables.count(var)) {
+                variables[var] *= value;
+            }
+            else {
+                std::cout << "Error: variable '" << var << "' not found\n";
+            }
+        }
+
+        // =========================
+        // DIV COMMAND
+        // Example:
+        // div x 2
+        // =========================
+        else if (command == "div") {
+
+            std::string var;
+            int value;
+
+            ss >> var >> value;
+
+            if (!variables.count(var)) {
+                std::cout << "Error: variable '" << var << "' not found\n";
+                return;
+            }
+
+            if (value == 0) {
+                std::cout << "Error: division by zero\n";
+                return;
+            }
+
+            variables[var] /= value;
+        }
+
+        // =========================
         // UNKNOWN COMMAND
         // =========================
         else {
@@ -313,6 +348,29 @@ private:
         std::cout << "Invalid operator in condition\n";
         return false;
     }
+
+    std::string readBlock(std::istringstream& stream) {
+    std::string block;
+    std::string line;
+    int depth = 1;
+
+    while (std::getline(stream, line)) {
+
+        for (char c : line) {
+            if (c == '(') depth++;
+            else if (c == ')') depth--;
+        }
+
+        if (depth == 0)
+            break;
+
+        block += line + "\n";
+    }
+
+    return block;
+}
+
+
 
 };
 

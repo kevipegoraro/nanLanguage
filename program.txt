@@ -41,3 +41,15 @@ if x > 3 (
 if x == 5 (
     print "equal"
 )
+
+
+
+print "New operations"
+set x = 10
+
+add x 5      
+sub x 3      
+mult x 2     
+div x 4      
+
+print x
