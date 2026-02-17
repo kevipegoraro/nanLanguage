@@ -12,6 +12,111 @@ It is designed to demonstrate:
 * Script execution from a file
 
 nanLanguage reads a `.txt` file and executes commands line by line.
+---
+# Parser:
+
+Interpreter
+ └── ExprParser
+       ├── input string
+       ├── position index
+       └── recursive parsing functions
+
+The Hidden Data Structure: Implicit Parse Tree
+        +
+       / \
+      5   *
+         / \
+        3   2
+
+Grammar hierarchic:
+expr
+ └── logical_or
+     └── logical_and
+         └── equality
+             └── comparison
+                 └── term
+                     └── factor
+                         └── unary
+                             └── primary
+
+How Precedence Is Enforced Structurally
+double term() {
+    double v = factor();
+    while (+ or -) {
+        v += factor();
+    }
+}
+
+This means:
+
+term() handles + -
+
+factor() handles * /
+
+unary() handles -x
+
+primary() handles literals, variables, parentheses
+
+So the call stack becomes your tree.
+
+Example:
+
+5 + 3 * 2
+
+Call chain:
+
+expr()
+ └── logical_or()
+      └── logical_and()
+           └── equality()
+                └── comparison()
+                     └── term()
+                          ├── factor() -> 5
+                          ├── sees '+'
+                          └── factor()
+                               ├── unary()
+                               └── factor()
+                                    ├── 3
+                                    ├── sees '*'
+                                    └── 2
+
+
+Multiplication is evaluated deeper → therefore first.
+
+That’s precedence by function nesting.
+
+🧩 5. Core Data Structure: Cursor-Based Linear Scan
+
+The parser is:
+
+std::string s;
+size_t pos;
+
+
+It never tokenizes first.
+
+Instead it does:
+
+peek()
+matchChar()
+matchStr()
+parseIdentifier()
+parseNumber()
+
+
+So this is called:
+
+Single-pass recursive descent with on-demand tokenization
+
+No token list stored.
+No AST stored.
+No intermediate representation.
+
+Just:
+
+character buffer
+
+cursor index
 
 ---
 

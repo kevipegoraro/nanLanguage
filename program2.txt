@@ -1,0 +1,14 @@
+set x = 10
+set y = pow(x, 2) + sqrt(16) + cos(10)
+
+print "y is:"
+print y
+
+if y > 50 (
+    print "y is bigger than 50"
+)
+
+loop i:10 (
+    set z = pow(i, 2) + 1
+    print z
+)
