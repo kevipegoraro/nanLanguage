@@ -61,11 +61,18 @@ void execute(const std::string& code) {
             // Collect block lines
             std::string block;
             std::string blockLine;
+            int depth = 1;
 
             while (std::getline(stream, blockLine)) {
 
-                if (blockLine == ")")
+                for (char c : blockLine) { // if do not use char and for here get error nesting loops and ifs
+                    if (c == '(') depth++;
+                    else if (c == ')') depth--;
+                }
+
+                if (depth == 0)
                     break;
+
 
                 block += blockLine + "\n";
             }
@@ -77,6 +84,52 @@ void execute(const std::string& code) {
                 execute(block);  // Recursive call
             }
         }
+
+                // =========================
+        // IF COMMAND
+        // =========================
+        else if (command == "if") {
+
+            // Get rest of line after "if"
+            std::string condition;
+            std::getline(ss, condition);
+
+            // Remove trailing "("
+            if (!condition.empty() && condition.back() == '(')
+                condition.pop_back();
+
+            // Trim spaces
+            condition.erase(0, condition.find_first_not_of(" "));
+            condition.erase(condition.find_last_not_of(" ") + 1);
+
+            // Expect "("
+            std::string openParen;
+            ss >> openParen;
+
+            // Collect block (nested supported)
+            std::string block;
+            std::string blockLine;
+            int depth = 1;
+
+            while (std::getline(stream, blockLine)) {
+
+                if (blockLine == "(")
+                    depth++;
+
+                else if (blockLine == ")") {
+                    depth--;
+                    if (depth == 0)
+                        break;
+                }
+
+                block += blockLine + "\n";
+            }
+
+            if (evaluateCondition(condition)) {
+                execute(block);
+            }
+        }
+
 
         else {
             runLine(line);
@@ -226,6 +279,41 @@ private:
             std::cout << "Unknown command: " << command << std::endl;
         }
     }
+    
+    bool evaluateCondition(const std::string& condition) {
+
+        std::istringstream ss(condition);
+
+        std::string left, op, right;
+        ss >> left >> op >> right;
+
+        int leftVal = 0;
+        int rightVal = 0;
+
+        // Left value
+        if (variables.count(left))
+            leftVal = variables[left];
+        else
+            leftVal = std::stoi(left);
+
+        // Right value
+        if (variables.count(right))
+            rightVal = variables[right];
+        else
+            rightVal = std::stoi(right);
+
+        // Comparison
+        if (op == ">")  return leftVal > rightVal;
+        if (op == "<")  return leftVal < rightVal;
+        if (op == ">=") return leftVal >= rightVal;
+        if (op == "<=") return leftVal <= rightVal;
+        if (op == "==") return leftVal == rightVal;
+        if (op == "!=") return leftVal != rightVal;
+
+        std::cout << "Invalid operator in condition\n";
+        return false;
+    }
+
 };
 
 // ============================================

@@ -21,3 +21,23 @@ print aux
 )
 print "Done"
 
+print "Nested loops"
+loop i:3 (
+    loop j:2 (
+        print i
+        print j
+    )
+)
+
+
+
+print "Ifs"
+set x = 5
+
+if x > 3 (
+    print "greater"
+)
+
+if x == 5 (
+    print "equal"
+)
