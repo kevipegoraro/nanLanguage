@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>nanLanguage Flowchart</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #0f1220;
+  color: white;
+  margin: 0;
+  padding: 30px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.node {
+  background: #1c2140;
+  border: 2px solid #5c6cff;
+  padding: 15px 25px;
+  border-radius: 12px;
+  min-width: 260px;
+  text-align: center;
+}
+
+.decision {
+  border-radius: 0;
+  transform: rotate(45deg);
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.decision span {
+  transform: rotate(-45deg);
+}
+
+.arrow {
+  font-size: 28px;
+}
+
+.row {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+}
+
+.small {
+  font-size: 14px;
+  color: #aaa;
+}
+</style>
+</head>
+<body>
+
+<h1>nanLanguage Interpreter Flowchart</h1>
+
+<div class="flow">
+
+<div class="node">Start Program</div>
+<div class="arrow">↓</div>
+
+<div class="node">Read .txt Script File</div>
+<div class="arrow">↓</div>
+
+<div class="node">Split File Into Lines</div>
+<div class="arrow">↓</div>
+
+<div class="node">Loop Through Each Line</div>
+<div class="arrow">↓</div>
+
+<div class="node decision"><span>Is Command?</span></div>
+
+<div class="row">
+  <div>
+    <div class="arrow">Yes ↓</div>
+    <div class="node">Parse Command</div>
+    <div class="arrow">↓</div>
+
+    <div class="node">Execute Command</div>
+
+    <div class="small">
+      print / set / add / sub / mult / div<br>
+      loop (recursive execution)<br>
+      if (condition evaluation)
+    </div>
+
+    <div class="arrow">↓</div>
+    <div class="node">Update Variables (map)</div>
+  </div>
+
+  <div>
+    <div class="arrow">No ↓</div>
+    <div class="node">Ignore Line</div>
+  </div>
+</div>
+
+<div class="arrow">↓</div>
+
+<div class="node decision"><span>More Lines?</span></div>
+
+<div class="row">
+  <div>
+    <div class="arrow">Yes ↓</div>
+    <div class="node">Continue Loop</div>
+  </div>
+  <div>
+    <div class="arrow">No ↓</div>
+    <div class="node">End Program</div>
+  </div>
+</div>
+
+</div>
+
+</body>
+</html>
