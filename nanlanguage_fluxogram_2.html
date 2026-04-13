@@ -1,351 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>nanLanguage Project Fluxogram</title>
-  <style>
-    :root {
-      --bg: #0b1020;
-      --panel: #121933;
-      --panel-2: #1a2347;
-      --text: #e8ecf8;
-      --muted: #aeb8d9;
-      --line: #7f8fd6;
-      --accent: #9ec5ff;
-      --good: #9ff0c2;
-      --warn: #ffd59e;
-    }
+    <meta charset="UTF-8">
+    <style>
+        .flow-container {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background-color: #f4f7f6;
+        }
 
-    * { box-sizing: border-box; }
+        .box {
+            border: 2px solid #333;
+            padding: 15px;
+            border-radius: 8px;
+            width: 300px;
+            text-align: center;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
 
-    body {
-      margin: 0;
-      font-family: Inter, Arial, Helvetica, sans-serif;
-      background: linear-gradient(180deg, var(--bg), #0f1730 60%, #0b1020);
-      color: var(--text);
-      padding: 32px;
-    }
+        .decision {
+            background-color: #fff9c4;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            width: 220px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-weight: bold;
+        }
 
-    .wrap {
-      max-width: 1400px;
-      margin: 0 auto;
-    }
+        .process { background-color: #e3f2fd; }
+        .io { background-color: #f3e5f5; font-style: italic; }
+        .arrow { font-size: 24px; color: #555; }
 
-    h1 {
-      margin: 0 0 10px;
-      font-size: 32px;
-      line-height: 1.1;
-    }
+        .loop-recursive {
+            border: 2px dashed #ff7043;
+            background-color: #fff3e0;
+        }
 
-    .subtitle {
-      margin: 0 0 28px;
-      color: var(--muted);
-      font-size: 16px;
-      max-width: 980px;
-    }
-
-    .legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 24px;
-    }
-
-    .tag {
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.04);
-      color: var(--muted);
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 13px;
-    }
-
-    .board {
-      position: relative;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-      padding: 18px;
-      border-radius: 24px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-      overflow: auto;
-    }
-
-    .col {
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      min-width: 260px;
-    }
-
-    .section-title {
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--accent);
-      margin: 4px 4px 0;
-    }
-
-    .node {
-      position: relative;
-      background: linear-gradient(180deg, var(--panel), var(--panel-2));
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px;
-      padding: 16px;
-      min-height: 96px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
-    }
-
-    .node h3 {
-      margin: 0 0 8px;
-      font-size: 18px;
-    }
-
-    .node p, .node li {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.45;
-    }
-
-    .node ul {
-      margin: 8px 0 0 18px;
-      padding: 0;
-    }
-
-    .start { outline: 2px solid rgba(159,240,194,0.25); }
-    .process { outline: 2px solid rgba(158,197,255,0.18); }
-    .decision { outline: 2px solid rgba(255,213,158,0.2); }
-    .future { outline: 2px dashed rgba(255,255,255,0.18); }
-
-    .arrow {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--line);
-      font-size: 14px;
-      margin: -6px 0 -2px 6px;
-    }
-
-    .arrow::before {
-      content: "";
-      display: inline-block;
-      width: 36px;
-      height: 2px;
-      background: var(--line);
-      position: relative;
-    }
-
-    .arrow::after {
-      content: "→";
-      font-size: 18px;
-      line-height: 1;
-      transform: translateX(-8px);
-    }
-
-    .mini-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 8px;
-    }
-
-    .mini {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 14px;
-      padding: 12px;
-    }
-
-    .mini strong {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 14px;
-    }
-
-    .footer {
-      margin-top: 18px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    @media (max-width: 1100px) {
-      .board { grid-template-columns: 1fr 1fr; }
-    }
-
-    @media (max-width: 720px) {
-      body { padding: 18px; }
-      .board { grid-template-columns: 1fr; }
-      h1 { font-size: 26px; }
-    }
-  </style>
+        h2 { color: #2c3e50; margin-bottom: 0; }
+    </style>
 </head>
 <body>
-  <div class="wrap">
-    <h1>nanLanguage Project Fluxogram</h1>
-    <p class="subtitle">
-      Flow view of the current nanLanguage project: compile the C++ interpreter, run a script file, parse commands line by line,
-      execute supported behaviors, and extend the language with future features.
-    </p>
 
-    <div class="legend">
-      <div class="tag">Start / Input</div>
-      <div class="tag">Core Execution</div>
-      <div class="tag">Command Handling</div>
-      <div class="tag">Roadmap</div>
+<div class="flow-container">
+    <h2>Main Entry</h2>
+    <div class="box io">Main: Open File & Read Content</div>
+    <div class="arrow">↓</div>
+
+    <h2>execute(code)</h2>
+    <div class="box process">Split code into lines using istringstream</div>
+    <div class="arrow">↓</div>
+    
+    <div class="box decision">What is the Command?</div>
+
+    <div style="display: flex; gap: 20px; align-items: flex-start;">
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <div class="box process"><b>"loop"</b><br>Parse var, count, & block</div>
+            <div class="arrow">↓</div>
+            <div class="box loop-recursive">Recursive Call:<br>execute(block) N times</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <div class="box process"><b>"if"</b><br>evaluateCondition()</div>
+            <div class="arrow">↓</div>
+            <div class="box decision" style="height: 80px; width: 140px;">True?</div>
+            <div class="arrow">↓</div>
+            <div class="box loop-recursive">Recursive Call:<br>execute(block)</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <div class="box process"><b>Default</b><br>Call runLine(line)</div>
+            <div class="arrow">↓</div>
+            <div class="box process" style="background-color: #c8e6c9;">
+                <b>Arithmetic & IO:</b><br>
+                print, set, add, sub, mult, div
+            </div>
+        </div>
     </div>
 
-    <div class="board">
-      <div class="col">
-        <div class="section-title">1. Entry</div>
+    <div class="arrow">↓</div>
+    <div class="box io">Next Line or End</div>
+</div>
 
-        <div class="node start">
-          <h3>Project Goal</h3>
-          <p>Lightweight interpreted scripting language in C++ for learning interpreter design, parsing, variables, loops, recursion, and script execution.</p>
-        </div>
-
-        <div class="arrow">build</div>
-
-        <div class="node process">
-          <h3>Compile Interpreter</h3>
-          <p><code>g++ -std=c++17 nanLanguage.cpp -o nanLanguage</code></p>
-        </div>
-
-        <div class="arrow">run</div>
-
-        <div class="node process">
-          <h3>Execute Script File</h3>
-          <p><code>./nanLanguage program.txt</code></p>
-          <ul>
-            <li>Input is a line-based <code>.txt</code> script</li>
-            <li>If no file is provided, usage message is shown</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="section-title">2. Interpreter Core</div>
-
-        <div class="node process">
-          <h3>Load Program</h3>
-          <p>Read the full file into memory, then split it line by line.</p>
-        </div>
-
-        <div class="arrow">parse</div>
-
-        <div class="node process">
-          <h3>Parse Instruction</h3>
-          <p>Take the first token of each line as the command name.</p>
-        </div>
-
-        <div class="arrow">dispatch</div>
-
-        <div class="node decision">
-          <h3>Command Dispatcher</h3>
-          <p>Match the parsed token to a supported command and execute the corresponding behavior.</p>
-        </div>
-
-        <div class="arrow">state</div>
-
-        <div class="node process">
-          <h3>Runtime State</h3>
-          <p>Variables are stored as integers in a map structure and reused across execution.</p>
-          <p style="margin-top:8px"><code>std::map&lt;std::string, int&gt;</code></p>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="section-title">3. Supported Commands</div>
-
-        <div class="node process">
-          <h3>Command Set</h3>
-          <div class="mini-grid">
-            <div class="mini">
-              <strong>print</strong>
-              <p>Outputs quoted text or a variable value.</p>
-            </div>
-            <div class="mini">
-              <strong>set</strong>
-              <p>Creates or updates integer variables.</p>
-            </div>
-            <div class="mini">
-              <strong>add</strong>
-              <p>Adds a numeric value to an existing variable.</p>
-            </div>
-            <div class="mini">
-              <strong>comment</strong>
-              <p>Ignores the line when spelled correctly.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="arrow">iterate</div>
-
-        <div class="node process">
-          <h3>Loop Execution</h3>
-          <p><code>loop variable:count ( ... )</code></p>
-          <ul>
-            <li>Starts at 0</li>
-            <li>Stops before count</li>
-            <li>Assigns the loop variable automatically</li>
-            <li>Uses recursion to execute the loop block</li>
-          </ul>
-        </div>
-
-        <div class="arrow">output</div>
-
-        <div class="node process">
-          <h3>Program Output</h3>
-          <p>The interpreter prints results as each instruction is executed.</p>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="section-title">4. Gaps and Next Steps</div>
-
-        <div class="node future">
-          <h3>Current Limitations</h3>
-          <ul>
-            <li>No string variables</li>
-            <li>No expression parsing</li>
-            <li>No conditionals</li>
-            <li>No functions</li>
-            <li>No file I/O</li>
-            <li>Weak syntax validation</li>
-            <li>No error recovery</li>
-          </ul>
-        </div>
-
-        <div class="arrow">evolve</div>
-
-        <div class="node future">
-          <h3>Roadmap</h3>
-          <ul>
-            <li>Add <code>if</code> conditionals</li>
-            <li>Add function definition and calls</li>
-            <li>Add math expression parsing</li>
-            <li>Add string variable support</li>
-            <li>Add file read/write</li>
-            <li>Add line-numbered error reporting</li>
-            <li>Add stronger nested block validation</li>
-            <li>Add optional AI API integration</li>
-          </ul>
-        </div>
-
-        <div class="arrow">value</div>
-
-        <div class="node start">
-          <h3>Educational Outcome</h3>
-          <p>Good foundation for building a scripting language, compiler, VM, or DSL while learning tokenization, parsing, recursion, and state management.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer">
-      Single-file HTML layout. Edit text labels, node order, and styling directly in this file.
-    </div>
-  </div>
 </body>
 </html>
