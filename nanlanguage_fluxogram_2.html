@@ -8,43 +8,94 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
-            padding: 20px;
+            gap: 15px;
+            padding: 40px;
             background-color: #f4f7f6;
+            position: relative;
+            width: fit-content;
+            margin: auto;
         }
 
         .box {
             border: 2px solid #333;
             padding: 15px;
             border-radius: 8px;
-            width: 300px;
+            width: 250px;
             text-align: center;
             background-color: white;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 2;
         }
 
         .decision {
             background-color: #fff9c4;
             clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-            width: 220px;
-            height: 120px;
+            width: 200px;
+            height: 110px;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
             font-weight: bold;
+            z-index: 2;
+            font-size: 14px;
         }
 
         .process { background-color: #e3f2fd; }
         .io { background-color: #f3e5f5; font-style: italic; }
-        .arrow { font-size: 24px; color: #555; }
+        .arrow-v { font-size: 24px; color: #555; font-weight: bold; line-height: 1; }
 
         .loop-recursive {
             border: 2px dashed #ff7043;
             background-color: #fff3e0;
         }
 
-        h2 { color: #2c3e50; margin-bottom: 0; }
+        .columns {
+            display: flex; 
+            gap: 20px; 
+            align-items: flex-start; 
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 20px;
+        }
+
+        /* The Loopback Arrow Connector */
+        .loop-connector {
+            position: absolute;
+            right: -30px;
+            top: 275px; /* Aligned with Decision */
+            bottom: 115px; /* Aligned with Next Line */
+            width: 60px;
+            border: 3px solid #ff7043;
+            border-left: none;
+            border-radius: 0 30px 30px 0;
+            z-index: 1;
+        }
+
+        .loop-arrow-head {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 0; 
+            height: 0; 
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-right: 15px solid #ff7043;
+        }
+
+        .loop-text {
+            position: absolute;
+            right: -85px;
+            top: 45%;
+            transform: rotate(90deg);
+            font-weight: bold;
+            color: #ff7043;
+            font-size: 12px;
+            background: #f4f7f6;
+            padding: 2px 10px;
+        }
+
+        h2 { color: #2c3e50; margin: 5px 0; }
     </style>
 </head>
 <body>
@@ -52,41 +103,54 @@
 <div class="flow-container">
     <h2>Main Entry</h2>
     <div class="box io">Main: Open File & Read Content</div>
-    <div class="arrow">↓</div>
+    <div class="arrow-v">↓</div>
 
     <h2>execute(code)</h2>
     <div class="box process">Split code into lines using istringstream</div>
-    <div class="arrow">↓</div>
+    <div class="arrow-v">↓</div>
     
-    <div class="box decision">What is the Command?</div>
+    <div class="decision">What is the Command?</div>
+    <div class="arrow-v">↓</div>
 
-    <div style="display: flex; gap: 20px; align-items: flex-start;">
+    <div class="columns">
         <div style="display: flex; flex-direction: column; align-items: center;">
-            <div class="box process"><b>"loop"</b><br>Parse var, count, & block</div>
-            <div class="arrow">↓</div>
-            <div class="box loop-recursive">Recursive Call:<br>execute(block) N times</div>
-        </div>
-
-        <div style="display: flex; flex-direction: column; align-items: center;">
-            <div class="box process"><b>"if"</b><br>evaluateCondition()</div>
-            <div class="arrow">↓</div>
-            <div class="box decision" style="height: 80px; width: 140px;">True?</div>
-            <div class="arrow">↓</div>
+            <div class="box process"><b>"loop"</b><br>Parse block</div>
+            <div class="arrow-v">↓</div>
             <div class="box loop-recursive">Recursive Call:<br>execute(block)</div>
         </div>
 
         <div style="display: flex; flex-direction: column; align-items: center;">
-            <div class="box process"><b>Default</b><br>Call runLine(line)</div>
-            <div class="arrow">↓</div>
+            <div class="box process"><b>"if"</b><br>evaluate()</div>
+            <div class="arrow-v">↓</div>
+            <div class="box loop-recursive">Recursive Call:<br>execute(block)</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <div class="box process"><b>Default</b><br>runLine(line)</div>
+            <div class="arrow-v" style="color: transparent;">↓</div>
             <div class="box process" style="background-color: #c8e6c9;">
-                <b>Arithmetic & IO:</b><br>
-                print, set, add, sub, mult, div
+                <b>Ops:</b> print, set, add, sub, mult, div
             </div>
         </div>
     </div>
 
-    <div class="arrow">↓</div>
-    <div class="box io">Next Line or End</div>
+    <div class="box decision" style="height: 80px; width: 160px; background-color: #e8f5e9;">More Lines?</div>
+    
+    <div style="display: flex; width: 100%; justify-content: center; gap: 100px; margin-top: -10px;">
+        <div style="text-align: center;">
+            <div class="arrow-v">↓</div>
+            <div style="font-weight: bold; color: #d32f2f; margin-bottom: 5px;">NO</div>
+            <div class="box io" style="background-color: #ffebee; width: 120px;">End</div>
+        </div>
+        <div style="width: 120px;">
+            <div style="font-weight: bold; color: #ff7043; margin-top: 15px; margin-left: 20px;">YES</div>
+        </div>
+    </div>
+
+    <div class="loop-connector">
+        <div class="loop-arrow-head"></div>
+        <div class="loop-text">ITERATE TO NEXT LINE</div>
+    </div>
 </div>
 
 </body>
