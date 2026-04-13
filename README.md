@@ -111,7 +111,7 @@ Ignores the line.
 comment "This is ignored"
 ```
 
-⚠️ Note: The command must be spelled correctly as `comment`.
+Note: The command must be spelled correctly as `comment`.
 
 ---
 
@@ -155,7 +155,7 @@ Loops can contain any valid nanLanguage commands.
 
 ---
 
-# 🧪 Example Program Explained
+# Example Program Explained
 
 Below is your example script (corrected for syntax consistency):
 
@@ -198,7 +198,7 @@ print "Done"
 
 # Step-by-Step Execution
 
-### 🟢 1. Print Hello
+### 1. Print Hello
 
 ```
 Hello World
@@ -206,7 +206,7 @@ Hello World
 
 ---
 
-### 🟢 2. Set x = 10
+### 2. Set x = 10
 
 ```
 x = 10
@@ -214,7 +214,7 @@ x = 10
 
 ---
 
-### 🟢 3. Add values to x
+### 3. Add values to x
 
 ```
 add x 5      → 15
@@ -231,7 +231,7 @@ After adding:
 
 ---
 
-### 🟢 4. Loop from 0 to 14
+### 4. Loop from 0 to 14
 
 The loop runs 15 times:
 
@@ -254,7 +254,7 @@ Output:
 
 ---
 
-### 🟢 5. Final Output
+### 5. Final Output
 
 ```
 Done
@@ -305,7 +305,7 @@ Here are logical improvements to evolve nanLanguage:
 
 ---
 
-## 🔥 1. Add Conditionals
+## 1. Add Conditionals
 
 ```
 if x > 5 (
@@ -315,7 +315,7 @@ if x > 5 (
 
 ---
 
-## 🔥 2. Add Functions
+## 2. Add Functions
 
 ```
 func greet (
@@ -327,7 +327,7 @@ call greet
 
 ---
 
-## 🔥 3. Add Math Expressions
+## 3. Add Math Expressions
 
 Support:
 
@@ -339,7 +339,7 @@ Requires expression parser (Shunting-yard algorithm).
 
 ---
 
-## 🔥 4. Add String Variables
+## 4. Add String Variables
 
 ```
 set name = "John"
@@ -354,7 +354,7 @@ std::map<std::string, std::variant<int, std::string>>
 
 ---
 
-## 🔥 5. Add File IO
+## 5. Add File IO
 
 ```
 write "Hello" to file.txt
@@ -363,7 +363,7 @@ read file.txt into x
 
 ---
 
-## 🔥 6. Add Error Reporting with Line Numbers
+## 6. Add Error Reporting with Line Numbers
 
 Instead of:
 
@@ -379,7 +379,7 @@ Line 12: Unknown command 'abc'
 
 ---
 
-## 🔥 7. Add Nested Loop Validation
+## 7. Add Nested Loop Validation
 
 Currently, nested loops work but without structural validation.
 
@@ -387,7 +387,7 @@ A proper block parser would improve reliability.
 
 ---
 
-## 🔥 8. Add AI API Integration
+## 8. Add AI API Integration
 
 Example concept:
 
